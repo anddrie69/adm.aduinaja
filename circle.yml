@@ -1,0 +1,18 @@
+test:
+  override:
+    - phpunit --bootstrap qa-tests/autoload.php qa-tests
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - sudo apt-get install sshpass
+      - sshpass -p $PROD_PASSWORD rsync -avz -e "ssh -p $PROD_SSH_PORT" -r . $PROD_USERNAME@$PROD_HOSTNAME:/home/laporpresiden
+      - sshpass -p $PROD_PASSWORD ssh $PROD_USERNAME@$PROD_HOSTNAME -p $PROD_SSH_PORT "service php5-fpm restart"
+  devserver:
+    branch: develop
+    commands:
+      - curl -o $HOME/$GAE_SDK_NAME $GAE_SDK_LINK
+      - unzip -q -d $HOME $HOME/$GAE_SDK_NAME
+      - $HOME/$GAE_PUSH_SCRIPT -A $LAPPRES_DEV_NAME update . --oauth2_refresh_token=$APPENGINE_TOKEN
+
