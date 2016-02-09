@@ -21,7 +21,7 @@ class ModelAduan extends Model
 
     public function AddNewAduan(){
         date_default_timezone_set("Asia/Jakarta");
-        $id = $this->member.'-'.substr(md5(date("Y-m-d H:i:s")), 10,20);
+        $id = 'aduan-'.$this->member.'-'.substr(md5(date("Y-m-d H:i:s")), 10,20);
         $db = Yii::$app->db;
         $sql = $db
                 ->createCommand()
@@ -43,7 +43,9 @@ class ModelAduan extends Model
     
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand('
-            SELECT *, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, member.nama as nama_member, category.nama as nama_category 
+            SELECT aduan.*, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, 
+            member.nama as nama_member, member.foto,
+            category.nama as nama_category 
             FROM t_aduan as aduan
             INNER JOIN t_member as member ON aduan.member = member.id
             INNER JOIN t_kategori as category ON aduan.category = category.id');
@@ -68,11 +70,27 @@ class ModelAduan extends Model
 
     public function deleteAduan($id){
 
+        // Delete aduan
         $db = Yii::$app->db;
         $sql = $db
             ->createCommand()
             ->delete('t_aduan', ['id' => $id])
             ->execute();
+
+        // Delete vote
+        $db = Yii::$app->db;
+        $sql = $db
+            ->createCommand()
+            ->delete('t_vote', ['aduan' => $id])
+            ->execute();
+
+        // Delete comment
+        $db = Yii::$app->db;
+        $sql = $db
+            ->createCommand()
+            ->delete('t_comment', ['aduan' => $id])
+            ->execute();
+        return true;
     }
 
     public function updateAduan($id){

@@ -9,6 +9,7 @@ use app\models\ModelApi;
 use app\models\ModelAduan;
 use app\models\ModelKategori;
 use app\models\ModelMember;
+use app\models\ModelVote;
 
 /**
  * Site controller
@@ -16,15 +17,43 @@ use app\models\ModelMember;
 class ApiController extends Controller
 {
 
+    public function actionRegister(){
+
+        $model = new ModelMember();
+        $request = Yii::$app->request;
+        $data = $model->AddNewMember($request->get('id_fb'), $request->get('nama'), $request->get('email'));
+        header('Content-Type: application/json');
+        if ($data == true) {
+            // Sukses
+            echo json_encode(array('status' => '1'));
+        }else{
+            // Gagal
+            echo json_encode(array('status' => '2'));
+        } 
+        // URL : http://back.end/index.php?r=api/register&id_fb=12&nama=andri&email=andri@gmail.com
+    }
+
     public function actionGetaduan(){
 
         $model = new ModelAduan();
+        $model_vote = new ModelVote();
         $data = $model->getAduan();
         header('Content-Type: application/json');
         if ($data == false) {
             echo json_encode(array('data' => $data, 'status' => '1'));
         }else{
-            echo json_encode(array('data' => $data, 'status' => '2'));
+            $arrs = array();
+            foreach ($data as $key => $value) {
+                $up_vote = $model_vote->getCountVote($value['id_aduan'],'1');
+                $down_vote = $model_vote->getCountVote($value['id_aduan'],'2');
+                $arrs[] = array(
+                        'aduan' => $value,
+                        'up_vote' => $up_vote['count_vote'],
+                        'down_vote' => $up_vote['count_vote'],
+                        'comments' => ''
+                    );
+            }
+            echo json_encode(array('data' => $arrs, 'status' => '2'));
         }
         
 
@@ -47,15 +76,40 @@ class ApiController extends Controller
     }
 
     public function actionAddnewaduan(){
+        $model = new ModelAduan();
         
+        if ($model->load(Yii::$app->request->post())) {
+            $model->AddNewUser();
+            // sukses
+            echo json_encode(array('status' => '1'));
+        }else{
+            // gagal
+            echo json_encode(array('status' => '2'));
+        } 
+
+        // URL : http://back.end/index.php?r=api/addnewaduan
+
     }
 
     public function actionEditaduan(){
         
     }
 
-    public function actionDeleteduan(){
+    public function actionDeleteaduan(){
         
+        $model = new ModelAduan();
+        $request = Yii::$app->request;
+        $data = $model->deleteAduan($request->get('id'));
+        header('Content-Type: application/json');
+        if ($data == true) {
+            // Berhasil
+            echo json_encode(array('status' => '1'));
+        }else{
+            // Gagal
+            echo json_encode(array('status' => '2'));
+        }
+
+        // URL : http://back.end/index.php?r=api/deleteaduan&id=111111 
     }
 
     public function actionGetkategori(){
@@ -87,18 +141,37 @@ class ApiController extends Controller
         // URL : http://back.end/index.php?r=api/getprofile&id=21
     }
 
+    public function actionCeknik(){
+
+        $model = new ModelMember();
+        $request = Yii::$app->request;
+        $data = $model->cekNik($request->get('id'),$request->get('nik'));
+        header('Content-Type: application/json');
+        if ($data == true) {
+            // Ada
+            echo json_encode(array('status' => '1'));
+        }else{
+            // Tidak ada
+            echo json_encode(array('status' => '2'));
+        }
+
+        // URL : http://back.end/index.php?r=api/getprofile&nik=21&id=
+    }
+
     public function actionVerifikasinik(){
         
         $request = Yii::$app->request;
-        $data = $this->getNIKDetail($request->get('id'));
+        $data = $this->getNIKDetail($request->get('nik'));
         header('Content-Type: application/json');
         if ($data == false) {
             echo json_encode(array('data' => $data, 'status' => '1'));
         }else{
             echo json_encode(array('data' => $data, 'status' => '2'));
+            $model = new ModelMember();
+            $model->updateNikMember($request->get('id'), $data['nama'],$data['nik'],$data['jenis_kelamin']);
         }
 
-        // URL : http://back.end/index.php?r=api/getprofile&id=21
+        // URL : http://back.end/index.php?r=api/getprofile&nik=21&id=
     }
 
     private function getNIKDetail($nikToCheck)
