@@ -48,7 +48,8 @@ class ModelAduan extends Model
             category.nama as nama_category 
             FROM t_aduan as aduan
             INNER JOIN t_member as member ON aduan.member = member.id
-            INNER JOIN t_kategori as category ON aduan.category = category.id');
+            INNER JOIN t_kategori as category ON aduan.category = category.id
+            ORDER BY aduan.tanggal DESC');
 
         $result = $command->queryAll();
         return $result;
