@@ -10,6 +10,46 @@ $user_level = $session->get('user_level');
 
 $this->title = 'Dashboard';
 ?>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load("current", {packages:["corechart"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Nama Kategori', 'Jumlah'],
+                    <?php 
+                        foreach ($count_category as $key => $value) {
+                            echo '["'.$value['nama'].'",     '.$value['count'].'],';
+                        }
+                    ?>
+                ]);
+
+                var options = {
+                    title: 'Jumlah Aduan Sesuai Kategori',
+                    is3D: true,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('aduan_kategori'));
+                chart.draw(data, options);
+
+                var data1 = google.visualization.arrayToDataTable([
+                    ['Nama Status', 'Jumlah'],
+                    <?php 
+                        foreach ($count_status as $keys => $values) {
+                            echo '["'.$keys.'",     '.$values.'],';
+                        }
+                    ?>
+                ]);
+
+                var options1 = {
+                    title: 'Jumlah Aduan Sesuai Status',
+                    is3D: true,
+                };
+
+                var chart1 = new google.visualization.PieChart(document.getElementById('aduan_status'));
+                chart1.draw(data1, options1);
+            }
+        </script>
         <div id="page-wrapper">
             <div class="container-fluid">
                 <!-- Page Heading -->
@@ -43,7 +83,7 @@ $this->title = 'Dashboard';
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-user fa-5x"></i>
+                                        <i class="fa fa-files-o fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge"><?php echo $aduan['count']; ?></div>
@@ -66,7 +106,7 @@ $this->title = 'Dashboard';
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
-                                            <i class="fa fa-user fa-5x"></i>
+                                            <i class="fa fa-users fa-5x"></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
                                             <div class="huge"><?php echo $member['count']; ?></div>
@@ -92,7 +132,7 @@ $this->title = 'Dashboard';
                                         </div>
                                         <div class="col-xs-9 text-right">
                                             <div class="huge"><?php echo $user['count']; ?></div>
-                                            <div>Member</div>
+                                            <div>User</div>
                                         </div>
                                     </div>
                                 </div>
@@ -108,6 +148,28 @@ $this->title = 'Dashboard';
                     <?php } ?>
                 </div>
                 <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Aduan Sesuai Kategori</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="aduan_kategori" style="width: 100%; height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Aduan Sesuai Status</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="aduan_status" style="width: 100%; height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /#page-wrapper -->

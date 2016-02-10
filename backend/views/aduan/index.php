@@ -52,7 +52,7 @@ $this->title = 'List Aduan';
                                     echo '<tr>
                                         <td>'.$no.'</td>
                                         <td>'.$value['tanggal_aduan'].'</td>
-                                        <td>'.$value['judul'].'</td>
+                                        <td><a href="'.$url = Url::to(['aduan/edit', 'id' => $value['id']]).'">'.$value['judul'].'</a></td>
                                         <td>'.$value['nama_member'].'</td>
                                         <td>'.$value['nama_category'].'</td>
                                         <td>'.$value['deskripsi'].'</td>

@@ -62,6 +62,16 @@ class ModelMember extends Model
         return $result;
     }
 
+    public function getCekFb($id_fb){
+    
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand('
+            SELECT * FROM t_member WHERE id_fb="'.$id_fb.'"');
+
+        $result = $command->queryOne();
+        return $result;
+    }
+
     public function cekNik($id,$nik){
     
         $connection = Yii::$app->getDb();
@@ -81,7 +91,7 @@ class ModelMember extends Model
             ->execute();
     }
 
-    public function updateMember($id, email, jenis_kelamin, alamat, pekerjaan){
+    public function updateMember($id, $email, $jenis_kelamin, $alamat, $pekerjaan){
 
         $connection = Yii::$app->getDb();
         $command =$connection->createCommand()

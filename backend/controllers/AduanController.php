@@ -29,4 +29,31 @@ class AduanController extends Controller
         }
         
     }
+
+    public function actionEdit()
+    {
+        $model = new ModelAduan();
+        
+        $session = Yii::$app->session;
+        $username = $session->get('username');
+        
+        if($username != null){
+            $request = Yii::$app->request;
+            
+            $getAduan = $model->getSingleAduan($request->get('id'));
+
+            if ($model->load(Yii::$app->request->post())) {
+                $model->updateStatusAduan();
+                return $this->redirect(Url::to(['aduan/edit', 'id' => $request->get('id')]));
+
+            }else{
+                return $this->render('edit', [
+                    'data' => $getAduan,
+                ]);
+            }
+        
+        }else{
+            return $this->redirect(Url::to(['login/index']));
+        }
+    }
 }

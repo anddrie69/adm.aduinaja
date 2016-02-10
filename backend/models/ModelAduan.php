@@ -6,16 +6,18 @@ use yii\base\Model;
 
 class ModelAduan extends Model
 {
+    public $id;
     public $member;
     public $judul;
     public $deskripsi;
     public $category;
     public $img;
+    public $status;
 
     public function rules()
     {
         return [
-            [['member', 'judul', 'deskripsi', 'category', 'img'], 'required'],
+            [['id','member', 'judul', 'deskripsi', 'category', 'img', 'status'], 'required'],
         ];
     }
 
@@ -59,7 +61,9 @@ class ModelAduan extends Model
     
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand('
-            SELECT *, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, member.nama as nama_member, category.nama as nama_category 
+            SELECT *, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, aduan.status status_aduan,
+            member.nama as nama_member, 
+            category.nama as nama_category 
             FROM t_aduan as aduan
             INNER JOIN t_member as member ON aduan.member = member.id
             INNER JOIN t_kategori as category ON aduan.category = category.id
@@ -105,6 +109,17 @@ class ModelAduan extends Model
                     'img' => $this->img,
                     ],
                 'id="'.$id.'"')
+            ->execute();
+    }
+
+    public function updateStatusAduan(){
+
+        $connection = Yii::$app->getDb();
+        $command =$connection->createCommand()
+            ->update('t_aduan', 
+                    ['status' => $this->status,
+                    ],
+                'id="'.$this->id.'"')
             ->execute();
     }
 

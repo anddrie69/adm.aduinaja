@@ -21,15 +21,22 @@ class ApiController extends Controller
 
         $model = new ModelMember();
         $request = Yii::$app->request;
-        $data = $model->AddNewMember($request->get('id_fb'), $request->get('nama'), $request->get('email'));
-        header('Content-Type: application/json');
-        if ($data == true) {
-            // Sukses
-            echo json_encode(array('status' => '1'));
+
+        if ($model->getCekFb($request->get('id_fb')) == null) {
+            $data = $model->AddNewMember($request->get('id_fb'), $request->get('nama'), $request->get('email'));    
+
+            header('Content-Type: application/json');
+            if ($data == true) {
+                // Sukses
+                echo json_encode(array('status' => '1'));
+            }else{
+                // Gagal
+                echo json_encode(array('status' => '2'));
+            }
         }else{
-            // Gagal
-            echo json_encode(array('status' => '2'));
-        } 
+            header('Content-Type: application/json');
+            echo json_encode(array('status' => '1'));
+        }
         // URL : http://back.end/index.php?r=api/register&id_fb=12&nama=andri&email=andri@gmail.com
     }
 

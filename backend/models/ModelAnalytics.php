@@ -27,5 +27,25 @@ class ModelAnalytics extends Model
         return $result;
     }
 
+    public function getCountAduanCategory($id){
+
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand('
+            SELECT COUNT(*) as count FROM t_aduan WHERE category="'.$id.'"');
+
+        $result = $command->queryOne();
+        return $result;
+    }
+
+    public function getCountAduanStatus($status){
+
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand('
+            SELECT COUNT(*) as count FROM t_aduan WHERE status="'.$status.'"');
+
+        $result = $command->queryOne();
+        return $result;
+    }
+
     
 } 

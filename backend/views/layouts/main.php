@@ -30,9 +30,9 @@ $user_level = $session->get('user_level');
 
 </head>
 
-<body>
-<?php $this->beginBody() ?>
-    <?php if($nama != null){ ?>
+<?php if($nama != null){ ?>
+    <body>
+    <?php $this->beginBody() ?>
         <div id="wrapper">
 
             <!-- Navigation -->
@@ -77,27 +77,27 @@ $user_level = $session->get('user_level');
                         </li>
                         <?php if($user_level == '1'){ ?>
                         <li>
-                            <a href="<?php echo Url::to(['kategori/index']); ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Kategori Aduan</a>
+                            <a href="<?php echo Url::to(['kategori/index']); ?>"><i class="fa fa-fw fa-files-o"></i> Kategori Aduan</a>
                         </li>
                         <?php } ?>
                         <li>
-                            <a href="<?php echo Url::to(['aduan/index']); ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Aduan</a>
+                            <a href="<?php echo Url::to(['aduan/index']); ?>"><i class="fa fa-fw fa-files-o"></i> Aduan</a>
                         </li>
                         <?php if($user_level == '1' || $user_level == '3'){ ?>
                         <li>
-                            <a href="<?php echo Url::to(['member/index']); ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Member</a>
+                            <a href="<?php echo Url::to(['member/index']); ?>"><i class="fa fa-fw fa-files-o"></i> Member</a>
                         </li>
                         <?php } ?>
                         <?php if($user_level == '1'){ ?>
                             <li>
-                                <a href="<?php echo Url::to(['user/index']); ?>"><i class="fa fa-fw fa-bar-chart-o"></i> User</a>
+                                <a href="<?php echo Url::to(['user/index']); ?>"><i class="fa fa-fw fa-files-o"></i> User</a>
                             </li>
-                            <li>
-                                <a href="<?php echo Url::to(['site/setting']); ?>"><i class="fa fa-fw fa-file"></i>Setting</a>
-                            </li>
+                            <!-- <li>
+                                <a href="<?php //echo Url::to(['site/setting']); ?>"><i class="fa fa-fw fa-file"></i>Setting</a>
+                            </li> -->
                         <?php } ?>
                         <li>
-                            <a href="<?php echo Url::to(['site/logout']); ?>"><i class="fa fa-fw fa-bar-chart-o"></i> Logout</a>
+                            <a href="<?php echo Url::to(['site/logout']); ?>"><i class="fa fa-fw fa-arrow-up"></i> Logout</a>
                         </li>
                         <!-- <li>
                             <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> User <i class="fa fa-fw fa-caret-down"></i></a>
@@ -127,24 +127,36 @@ $user_level = $session->get('user_level');
 
         </div>
         <!-- /#wrapper -->
-    <?php 
-        }else{
-            echo $content;
-        }
-    ?>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
-<?php $this->endBody() ?>
-</body>
+        <!-- Morris Charts JavaScript -->
+        <script src="js/plugins/morris/raphael.min.js"></script>
+        <script src="js/plugins/morris/morris.min.js"></script>
+        <script src="js/plugins/morris/morris-data.js"></script>
+    <?php $this->endBody() ?>
+    </body>
+<?php }else{ ?>
+    <body style="background: #d2d6de none repeat scroll 0 0;">
+        <?php $this->beginBody() ?>
+            <?php echo $content; ?>
+            <!-- jQuery -->
+            <script src="js/jquery.js"></script>
+
+            <!-- Bootstrap Core JavaScript -->
+            <script src="js/bootstrap.min.js"></script>
+
+            <!-- Morris Charts JavaScript -->
+            <script src="js/plugins/morris/raphael.min.js"></script>
+            <script src="js/plugins/morris/morris.min.js"></script>
+            <script src="js/plugins/morris/morris-data.js"></script>
+        <?php $this->endBody() ?>
+    </body>
+<?php } ?>
 
 </html>
 <?php $this->endPage() ?>

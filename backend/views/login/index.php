@@ -11,21 +11,30 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Login | Aduin Aja Administrator';
 ?>
-<div class="container" style="margin-top:10%;">
-  <div class="row">
-    <div class="col-lg-4">
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>Aduin</b>Aja</a>
         </div>
-    <div class="col-lg-4">
-        <center><h2>Login Administrator</h2></center>
-        <?php $form = ActiveForm::begin(); ?>
+        <div class="login-box-body">
             <?php echo $warning; ?>
-            <label for="nik" class="sr-only">Username</label>
-            <input type="text" name="ModelLogin[username]" id="modellogin-username" class="form-control" placeholder="Username" required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="ModelLogin[password]" id="modellogin-password" class="form-control" placeholder="Password" required>
-            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
-        <?php ActiveForm::end(); ?>
+            <?php if($warning == ''){ ?>
+                <p class="login-box-msg">Silakan masukkan username dan password anda.</p>
+            <?php } ?>
+            <?php $form = ActiveForm::begin(); ?>
+                <div class="form-group has-feedback">
+                    <input type="text" name="ModelLogin[username]" id="modellogin-username" class="form-control" placeholder="Username" required autofocus>
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="ModelLogin[password]" id="modellogin-password" class="form-control" placeholder="Password" required>
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
+                    </div>
+                </div>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
-    <div class="col-lg-4"></div>
-  </div>
-</div> <!-- /container -->
