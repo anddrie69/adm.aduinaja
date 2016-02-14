@@ -46,8 +46,7 @@ $this->title = 'Add New User';
                             <h3 class="panel-title">Nama</h3>
                         </div>
                         <div class="panel-body">
-                            <input type="hidden" name="ModelUser[nama]" value="">
-                            <input type="text" class="form-control" placeholder="Nama" DISABLED>
+                            <input type="text" name="ModelUser[nama]" class="form-control" placeholder="Masukkan Nama Anda">
                         </div>
                     </div>
                     <div class="panel panel-primary">
@@ -95,6 +94,7 @@ $this->title = 'Add New User';
                                 <option value="2">Moderator</option>
                                 <option value="3">Kepala Daerah</option>
                                 <option value="4">Sesuai Kategori</option>
+                                <option value="5">Sesuai Kecamatan</option>
                             </select>
                         </div>
                     </div>
@@ -108,6 +108,21 @@ $this->title = 'Add New User';
                                 <?php
                                     foreach ($getKategori as $key => $value) {
                                         echo '<option value="'.$value['id'].'">'.$value['nama'].'</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Kecamatan</h3>
+                        </div>
+                        <div class="panel-body">
+                            <select class="form-control" name="ModelUser[kecamatan]" id="modeluser-kecamatan">
+                                <option value="0">Pilih Kecamatan</option>
+                                <?php
+                                    foreach ($getKecamatan as $key => $value) {
+                                        echo '<option value="'.$value.'">'.$value.'</option>';
                                     }
                                 ?>
                             </select>

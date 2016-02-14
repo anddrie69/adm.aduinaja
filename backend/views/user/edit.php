@@ -99,24 +99,35 @@ $this->title = 'Edit User';
                                             $selected2 = '';
                                             $selected3 = '';
                                             $selected4 = '';
+                                            $selected5 = '';
                                         break;
                                         case '2':
                                             $selected1 = '';
                                             $selected2 = 'selected="selected"';
                                             $selected3 = '';
                                             $selected4 = '';
+                                            $selected5 = '';
                                         break;
                                         case '3':
                                             $selected1 = '';
                                             $selected2 = '';
                                             $selected3 = 'selected="selected"';
                                             $selected4 = '';
+                                            $selected5 = '';
                                         break;
                                         case '4':
                                             $selected1 = '';
                                             $selected2 = '';
                                             $selected3 = '';
                                             $selected4 = 'selected="selected"';
+                                            $selected5 = '';
+                                        break;
+                                        case '5':
+                                            $selected1 = '';
+                                            $selected2 = '';
+                                            $selected3 = '';
+                                            $selected4 = '';
+                                            $selected5 = 'selected="selected"';
                                         break;
                                         
                                     }
@@ -125,6 +136,7 @@ $this->title = 'Edit User';
                                 <option value="2" <?php echo $selected2; ?>>Moderator</option>
                                 <option value="3" <?php echo $selected3; ?>>Kepala Daerah</option>
                                 <option value="4" <?php echo $selected4; ?>>Sesuai Kategori</option>
+                                <option value="5" <?php echo $selected5; ?>>Sesuai Kecamatan</option>
                             </select>
                         </div>
                     </div>
@@ -144,6 +156,21 @@ $this->title = 'Edit User';
                                             $selected = '';
                                         }
                                         echo '<option value="'.$value['id'].'" '.$selected.'>'.$value['nama'].'</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Kecamatan</h3>
+                        </div>
+                        <div class="panel-body">
+                            <select class="form-control" name="ModelUser[kecamatan]" id="modeluser-kecamatan">
+                                <option value="0">Pilih Kecamatan</option>
+                                <?php
+                                    foreach ($getKecamatan as $key => $value) {
+                                        echo '<option value="'.$value.'">'.$value.'</option>';
                                     }
                                 ?>
                             </select>

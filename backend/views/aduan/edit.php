@@ -9,7 +9,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Edit User';
+$this->title = 'Detail Aduan Member';
 ?>
 <div class="container-fluid">
     <div class="container-fluid">
@@ -17,14 +17,14 @@ $this->title = 'Edit User';
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Edit User
+                    Detail Aduan
                 </h1>
                 <ol class="breadcrumb">
                     <li>
                         <i class="fa fa-dashboard"></i>  <a href="/">Dashboard</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-table"></i> Edit User
+                        <i class="fa fa-table"></i> Detail Aduan
                     </li>
                 </ol>
             </div>

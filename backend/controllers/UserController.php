@@ -7,6 +7,7 @@ use yii\web\Session;
 use yii\helpers\Url;
 use app\models\ModelUser;
 use app\models\ModelKategori;
+use backend\components\helper\FunctionHelper;
 
 /**
  * Site controller
@@ -34,7 +35,9 @@ class UserController extends Controller
     {
     	$model = new ModelUser();
         $modelKat = new ModelKategori();
-        
+        $function = new FunctionHelper();
+        $getKecamatan = $function->arrsKecamatan();
+
         $getKategori = $modelKat->getKategori();
 
         $session = Yii::$app->session;
@@ -50,6 +53,7 @@ class UserController extends Controller
                 'data' => $model,
                 'warning' => $warning,
                 'getKategori' => $getKategori,
+                'getKecamatan' => $getKecamatan,
             ]);
         }else{
             return $this->redirect(Url::to(['login/index']));
@@ -81,6 +85,8 @@ class UserController extends Controller
     {
         $model = new ModelUser();
         $modelKat = new ModelKategori();
+        $function = new FunctionHelper();
+        $getKecamatan = $function->arrsKecamatan();
         
         $session = Yii::$app->session;
         $username = $session->get('username');
@@ -101,6 +107,7 @@ class UserController extends Controller
                 'data' => $getUser,
                 'warning' => $warning,
                 'getKategori' => $getKategori,
+                'getKecamatan' => $getKecamatan
             ]);
         }else{
             return $this->redirect(Url::to(['login/index']));

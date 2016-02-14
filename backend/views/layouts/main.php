@@ -11,6 +11,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 use  yii\web\Session;
+use backend\components\helper\FunctionHelper;
 
 AppAsset::register($this);
 $session = Yii::$app->session;
@@ -18,6 +19,9 @@ $id = $session->get('id');
 $nik = $session->get('nik');
 $nama = $session->get('nama');
 $user_level = $session->get('user_level');
+
+
+$function = new FunctionHelper();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -28,6 +32,8 @@ $user_level = $session->get('user_level');
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
+    <!-- jQuery -->
+    <script src="<?php echo Url::base(); ?>/statics/js/jquery.js"></script>
 </head>
 
 <?php if($nama != null){ ?>
@@ -45,26 +51,26 @@ $user_level = $session->get('user_level');
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">SB Admin</a>
+                    <a class="navbar-brand" href="/">Aduin<b>Aja</b></a>
                 </div>
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
                     <li class="dropdown">
-                        <a href="<?php echo Url::to(['user/profile', 'id' => $id]); ?>"><?php echo $nama; ?></a>
-                        <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $nama; ?> <b class="caret"></b></a> -->
+                        <!-- <a href="<?php //echo Url::to(['user/profile', 'id' => $id]); ?>"><?php //echo $nama; ?></a> -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $nama; ?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li>
+                            <!-- <li>
                                 <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                            </li>
+                            </li> -->
                             <li>
-                                <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                                <a href="#"><i class="fa fa-fw fa-user"></i>Anda Seorang <?php echo $function->UserLevel($user_level); ?></a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                                <a href="<?php echo Url::to(['site/logout']); ?>"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                             </li>
                         </ul>
                     </li>
@@ -75,41 +81,51 @@ $user_level = $session->get('user_level');
                         <li class="active">
                             <a href="/"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                         </li>
-                        <?php if($user_level == '1'){ ?>
                         <li>
-                            <a href="<?php echo Url::to(['kategori/index']); ?>"><i class="fa fa-fw fa-files-o"></i> Kategori Aduan</a>
-                        </li>
-                        <?php } ?>
-                        <li>
-                            <a href="<?php echo Url::to(['aduan/index']); ?>"><i class="fa fa-fw fa-files-o"></i> Aduan</a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-files-o"></i> Aduan <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo1" class="collapse">
+                                <li>
+                                    <a href="<?php echo Url::to(['aduan/index']); ?>">Daftar Aduan</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo Url::to(['aduan/addnew']); ?>">Tambahkan Aduan</a>
+                                </li>
+                                <?php if($user_level == '1'){ ?>
+                                    <li>
+                                        <a href="<?php echo Url::to(['kategori/index']); ?>">Kategori Aduan</a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
                         </li>
                         <?php if($user_level == '1' || $user_level == '3'){ ?>
                         <li>
-                            <a href="<?php echo Url::to(['member/index']); ?>"><i class="fa fa-fw fa-files-o"></i> Member</a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="fa fa-fw fa-files-o"></i> Member <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo2" class="collapse">
+                                <li>
+                                    <a href="<?php echo Url::to(['member/index']); ?>">Daftar Member</a>
+                                </li>
+                                <!-- <li>
+                                    <a href="<?php //echo Url::to(['member/addnew']); ?>">Tambahkan Member</a>
+                                </li> -->
+                            </ul>
                         </li>
                         <?php } ?>
                         <?php if($user_level == '1'){ ?>
                             <li>
-                                <a href="<?php echo Url::to(['user/index']); ?>"><i class="fa fa-fw fa-files-o"></i> User</a>
-                            </li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#demo3"><i class="fa fa-fw fa-files-o"></i> User <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="demo3" class="collapse">
+                                <li>
+                                    <a href="<?php echo Url::to(['user/index']); ?>">Daftar User</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo Url::to(['user/addnew']); ?>">Tambahkan User</a>
+                                </li>
+                            </ul>
+                        </li>
                             <!-- <li>
                                 <a href="<?php //echo Url::to(['site/setting']); ?>"><i class="fa fa-fw fa-file"></i>Setting</a>
                             </li> -->
                         <?php } ?>
-                        <li>
-                            <a href="<?php echo Url::to(['site/logout']); ?>"><i class="fa fa-fw fa-arrow-up"></i> Logout</a>
-                        </li>
-                        <!-- <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> User <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="demo" class="collapse">
-                                <li>
-                                    <a href="#">Daftar User</a>
-                                </li>
-                                <li>
-                                    <a href="#">Tambahkan User</a>
-                                </li>
-                            </ul>
-                        </li> -->
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -128,16 +144,9 @@ $user_level = $session->get('user_level');
         </div>
         <!-- /#wrapper -->
 
-        <!-- jQuery -->
-        <script src="js/jquery.js"></script>
-
         <!-- Bootstrap Core JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="<?php echo Url::base(); ?>/statics/js/bootstrap.min.js"></script>
 
-        <!-- Morris Charts JavaScript -->
-        <script src="js/plugins/morris/raphael.min.js"></script>
-        <script src="js/plugins/morris/morris.min.js"></script>
-        <script src="js/plugins/morris/morris-data.js"></script>
     <?php $this->endBody() ?>
     </body>
 <?php }else{ ?>
@@ -145,15 +154,10 @@ $user_level = $session->get('user_level');
         <?php $this->beginBody() ?>
             <?php echo $content; ?>
             <!-- jQuery -->
-            <script src="js/jquery.js"></script>
+            <script src="<?php echo Url::base(); ?>/statics/js/jquery.js"></script>
 
             <!-- Bootstrap Core JavaScript -->
-            <script src="js/bootstrap.min.js"></script>
-
-            <!-- Morris Charts JavaScript -->
-            <script src="js/plugins/morris/raphael.min.js"></script>
-            <script src="js/plugins/morris/morris.min.js"></script>
-            <script src="js/plugins/morris/morris-data.js"></script>
+            <script src="<?php echo Url::base(); ?>/statics/js/bootstrap.min.js"></script>
         <?php $this->endBody() ?>
     </body>
 <?php } ?>

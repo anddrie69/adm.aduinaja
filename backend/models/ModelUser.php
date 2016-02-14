@@ -13,11 +13,12 @@ class ModelUser extends Model
     public $email;
     public $user_level;
     public $category;
+    public $kecamatan;
 
     public function rules()
     {
         return [
-            [['nik', 'nama', 'username', 'password', 'email', 'user_level', 'category'], 'required'],
+            [['nik', 'nama', 'username', 'password', 'email', 'user_level', 'category', 'kecamatan'], 'required'],
             ['email', 'email'],
         ];
     }
@@ -38,6 +39,7 @@ class ModelUser extends Model
                     'email' => $this->email,
                     'user_level' => $this->user_level,
                     'category' => $this->category,
+                    'kecamatan' => $this->kecamatan,
                     'status' => '1'
                     ])
                 ->execute();
@@ -85,6 +87,7 @@ class ModelUser extends Model
                     'email' => $this->email,
                     'user_level' => $this->user_level,
                     'category' => $this->category,
+                    'kecamatan' => $this->kecamatan,
                     ],
                 'id="'.$id.'"')
             ->execute();

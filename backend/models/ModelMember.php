@@ -105,16 +105,16 @@ class ModelMember extends Model
             ->execute();
     }
 
-    public function updateNikMember($id,$nama,$nik,$jenis_kelamin){
+    public function updateNikMember($id_fb,$nama,$nik,$jenis_kelamin){
 
         $connection = Yii::$app->getDb();
         $command =$connection->createCommand()
             ->update('t_member', 
                     ['nama' => $nama,
-                    'nik' => $nik,
+                    'nik' => $nik, 
                     'jenis_kelamin' => $jenis_kelamin,
                     ],
-                'id="'.$id.'"')
+                'id_fb="'.$id_fb.'"')
             ->execute();
     }
 

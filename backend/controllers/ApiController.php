@@ -10,6 +10,7 @@ use app\models\ModelAduan;
 use app\models\ModelKategori;
 use app\models\ModelMember;
 use app\models\ModelVote;
+use backend\components\helper\FunctionHelper;
 
 /**
  * Site controller
@@ -38,6 +39,14 @@ class ApiController extends Controller
             echo json_encode(array('status' => '1'));
         }
         // URL : http://back.end/index.php?r=api/register&id_fb=12&nama=andri&email=andri@gmail.com
+    }
+
+    public function actionGetkecamatan(){
+
+        $function = new FunctionHelper();
+        $data = $function->arrsKecamatan();
+        header('Content-Type: application/json');
+        echo json_encode(array('data' => $data, 'status' => '1'));
     }
 
     public function actionGetaduan(){
@@ -83,16 +92,43 @@ class ApiController extends Controller
     }
 
     public function actionAddnewaduan(){
-        $model = new ModelAduan();
+    //read the post input (use this technique if you have no post variable name):
+    $post = file_get_contents("php://input");
+
+    //decode json post input as php array:
+    $data = CJSON::decode($post, true);
+
+    echo $data;
+
+        //read the post input (use this technique if you have no post variable name):
+        // $post = file_get_contents("php://input");
+
+        //decode json post input as php array:
+        // $data = CJSON::decode($post, true);
+        // $showjson = json_decode($post);
+        // $result = file_get_contents('php://input');
+        // echo $result;
+        // $post = Yii::$app->request->post();
+        // $get = json_decode($result); 
+        // // Get data from object
+        // $member = $get->member;
+        // $judul = $get->judul;
+        // $deskripsi = $get->deskripsi;
+        // $category = $get->category;
+        // $kecamatan = $get->kecamatan;
+
+        // echo '<h1>Ngantuk</h1>';
+        // Your code.....
+        // $model = new ModelAduan();
         
-        if ($model->load(Yii::$app->request->post())) {
-            $model->AddNewUser();
+        // // if ($model->load(Yii::$app->request->post())) {
+        //     $data = $model->AddNewUser($member, $judul, $deskripsi, $category, $kecamatan);
             // sukses
-            echo json_encode(array('status' => '1'));
-        }else{
-            // gagal
-            echo json_encode(array('status' => '2'));
-        } 
+            // echo json_encode(array('data' => $result, 'status' => '1'));
+        // }else{
+        //     // gagal
+        //     echo json_encode(array('status' => '2'));
+        // } 
 
         // URL : http://back.end/index.php?r=api/addnewaduan
 
@@ -162,25 +198,65 @@ class ApiController extends Controller
             echo json_encode(array('status' => '2'));
         }
 
-        // URL : http://back.end/index.php?r=api/getprofile&nik=21&id=
-    }
+        // URL : http://back.end/index.php?r=api/ceknik&nik=21&id=
+    }                                                                                                                                                                                                                                                                                                          
 
     public function actionVerifikasinik(){
         
         $request = Yii::$app->request;
         $data = $this->getNIKDetail($request->get('nik'));
         header('Content-Type: application/json');
-        if ($data == false) {
-            echo json_encode(array('data' => $data, 'status' => '1'));
+        if ($data['nik'] == false) {
+            echo json_encode(array('status' => '1')); 
         }else{
             echo json_encode(array('data' => $data, 'status' => '2'));
             $model = new ModelMember();
-            $model->updateNikMember($request->get('id'), $data['nama'],$data['nik'],$data['jenis_kelamin']);
+            $model->updateNikMember($request->get('id_fb'), $data['nama'],$data['nik'],$data['jenis_kelamin']);
         }
 
-        // URL : http://back.end/index.php?r=api/getprofile&nik=21&id=
+        // URL : http://back.end/index.php?r=api/verifikasinik&nik=21&id_fb=
     }
 
+    // ================================= Upload Images ======================================== //
+    public function actionFormpload(){
+        
+        return $this->render('index');
+    }
+
+
+    // sementara tidak digunakan cuman untuk testing saja //
+    private function imagename($filename){
+        
+        $char = 'ea011088ddc8b17e619322202f1f177d';
+        $pswd = sha1(sha1($char) . date('Y-m-d H:i:s')); 
+        $newpwd = substr($pswd, 10, 20);
+        $pecah = explode(".", $filename);
+        $belah = count($pecah);
+        $ext = strtolower($pecah[$belah-1]);
+        $newName = substr($newpwd, 0,10).".".$ext;
+        return $newName;
+    }
+
+    public function actionUpload(){
+        define('IS_AJAX',true);
+        $doc_root = $_SERVER['DOCUMENT_ROOT'];
+        $target_foto = $doc_root."/backend/web/statics/aduan/";
+
+        if(!empty($_FILES['foto'])){
+            $ft = $_FILES['foto']['type'];
+            $tipe = array("image/jpg","image/jpeg","image/png");
+            if(in_array($ft, $tipe)){
+                $nama = $this->imagename($_FILES['foto']['name']);
+                move_uploaded_file($_FILES['foto']['tmp_name'],$target_foto.$nama);
+                $data = array();
+                $data['imgname'] = $nama;
+                echo json_encode($data);
+                die();
+            }
+        }
+    }
+
+    // ================================= Json verifikasi NIK ================================== //
     private function getNIKDetail($nikToCheck)
     {
         $url = 'http://data.kpu.go.id/dpt2015.php';

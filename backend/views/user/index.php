@@ -4,9 +4,9 @@
 /* @var $name string */
 /* @var $message string */
 /* @var $exception Exception */
-
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\components\helper\FunctionHelper;
 
 $this->title = 'List User';
 ?>
@@ -51,12 +51,13 @@ $this->title = 'List User';
                         <tbody>
                             <?php
                                 $no=1;
+                                $function = new FunctionHelper();
                                 foreach ($data as $key => $value) {
                                     echo '<tr>
                                         <td>'.$no.'</td>
                                         <td><a href="'.$url = Url::to(['user/edit', 'id' => $value['id']]).'">'.$value['nama'].'</a></td>
                                         <td>'.$value['username'].'</td>
-                                        <td>'.$value['user_level'].'</td>
+                                        <td>'.$function->UserLevel($value['user_level']).'</td>
                                         <td><a href="'.$url = Url::to(['user/delete', 'id' => $value['id']]).'">Delete</a></td>
                                     </tr>';
                                     $no++;

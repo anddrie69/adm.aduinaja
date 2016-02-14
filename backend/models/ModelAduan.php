@@ -3,6 +3,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use  yii\web\Session;
 
 class ModelAduan extends Model
 {
@@ -11,17 +12,27 @@ class ModelAduan extends Model
     public $judul;
     public $deskripsi;
     public $category;
-    public $img;
+    public $kecamatan;
+    // public $img;
     public $status;
 
     public function rules()
     {
         return [
-            [['id','member', 'judul', 'deskripsi', 'category', 'img', 'status'], 'required'],
+            [['id','member', 'judul', 'deskripsi', 'category', 'kecamatan', 'status'], 'required'],
         ];
     }
 
-    public function AddNewAduan(){
+    public function AddNewAduan($member,$judul,$deskripsi,$category,$kecamatan){
+
+        // $foto = $this->img;
+        // $filename = $this->filename;
+        // $binary = base64_decode($foto);
+        // header('Content-Type: bitmap; charset=utf-8');
+        // $file = fopen('backend/web/statics/aduan/'.$filename, 'wb');
+        // fwrite($file, $binary);
+        // fclose($file);
+
         date_default_timezone_set("Asia/Jakarta");
         $id = 'aduan-'.$this->member.'-'.substr(md5(date("Y-m-d H:i:s")), 10,20);
         $db = Yii::$app->db;
@@ -30,11 +41,12 @@ class ModelAduan extends Model
                 ->insert('t_aduan', [
                     'id' => $id,
                     'tanggal' => date("Y-m-d H:i:s"),
-                    'member' => $this->member,
-                    'judul' => $this->judul,
-                    'deskripsi' => $this->deskripsi,
-                    'category' => $this->category,
-                    'img' => $this->img,
+                    'member' => $member,
+                    'judul' => $judul,
+                    'deskripsi' => $deskripsi,
+                    'category' => $category,
+                    'kecamatan' => $kecamatan,
+                    'img' => '', //$this->img,
                     'status' => '1'
                     ])
                 ->execute();
@@ -42,15 +54,26 @@ class ModelAduan extends Model
     }
 
     public function getAduan(){
-    
+        
+        $session = Yii::$app->session;
+        $user_level = $session->get('user_level');
+        $category = $session->get('category');
+
+        if($user_level == '4'){
+            $cat = 'WHERE aduan.category="'.$category.'"';
+        }else{
+            $cat = '';
+        }
+
         $connection = Yii::$app->getDb();
         $command = $connection->createCommand('
-            SELECT aduan.*, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, 
+            SELECT aduan.*, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, aduan.status as status_aduan,
             member.nama as nama_member, member.foto,
             category.nama as nama_category 
             FROM t_aduan as aduan
             INNER JOIN t_member as member ON aduan.member = member.id
             INNER JOIN t_kategori as category ON aduan.category = category.id
+            '.$cat.'
             ORDER BY aduan.tanggal DESC');
 
         $result = $command->queryAll();
@@ -70,6 +93,27 @@ class ModelAduan extends Model
             WHERE aduan.id="'.$id.'"');
 
         $result = $command->queryOne();
+        return $result;
+    }
+
+    public function getAduanMember($member){
+        
+        $session = Yii::$app->session;
+        $user_level = $session->get('user_level');
+        $category = $session->get('category');
+
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand('
+            SELECT aduan.*, aduan.id as id_aduan, aduan.tanggal as tanggal_aduan, aduan.status as status_aduan,
+            member.nama as nama_member, member.foto,
+            category.nama as nama_category 
+            FROM t_aduan as aduan
+            INNER JOIN t_member as member ON aduan.member = member.id
+            INNER JOIN t_kategori as category ON aduan.category = category.id
+            WHERE member.id="'.$member.'"
+            ORDER BY aduan.tanggal DESC');
+
+        $result = $command->queryAll();
         return $result;
     }
 

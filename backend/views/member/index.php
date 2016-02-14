@@ -50,7 +50,7 @@ $this->title = 'List Member';
                                 foreach ($data as $key => $value) {
                                     echo '<tr>
                                         <td>'.$no.'</td>
-                                        <td>'.$value['nama'].'</td>
+                                        <td><a href="'.$url = Url::to(['member/detail', 'id' => $value['id']]).'">'.$value['nama'].'</a></td>
                                         <td>'.$value['nik'].'</td>
                                         <td>'.$value['email'].'</td>
                                         <td>'.$value['jenis_kelamin'].'</td>

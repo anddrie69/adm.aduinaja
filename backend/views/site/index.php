@@ -15,6 +15,7 @@ $this->title = 'Dashboard';
             google.charts.load("current", {packages:["corechart"]});
             google.charts.setOnLoadCallback(drawChart);
             function drawChart() {
+                 // ================= Chart 1 ========================= //
                 var data = google.visualization.arrayToDataTable([
                     ['Nama Kategori', 'Jumlah'],
                     <?php 
@@ -32,6 +33,7 @@ $this->title = 'Dashboard';
                 var chart = new google.visualization.PieChart(document.getElementById('aduan_kategori'));
                 chart.draw(data, options);
 
+                // ================= Chart 2 ========================= //
                 var data1 = google.visualization.arrayToDataTable([
                     ['Nama Status', 'Jumlah'],
                     <?php 
@@ -48,7 +50,29 @@ $this->title = 'Dashboard';
 
                 var chart1 = new google.visualization.PieChart(document.getElementById('aduan_status'));
                 chart1.draw(data1, options1);
+
+                // ================= Chart 3 ========================= //
+                var data = google.visualization.arrayToDataTable([
+                ['Kecamatan', 'Jumlah'],
+                <?php 
+                    foreach ($count_kec as $key => $value) { 
+                        echo '["'.$value['kec'].'",  '.$value['count'].'],';
+                    }
+                ?>
+                ]);
+
+                var options = {
+                title : 'Jumlah aduan dari setiap kecamatan',
+                vAxis: {title: 'Jumlah'},
+                hAxis: {title: 'Kecamatan'},
+                seriesType: 'bars',
+                series: {5: {type: 'line'}}
+                };
+
+                var chart = new google.visualization.ComboChart(document.getElementById('kecamatan_aduan'));
+                chart.draw(data, options);
             }
+
         </script>
         <div id="page-wrapper">
             <div class="container-fluid">
@@ -148,28 +172,44 @@ $this->title = 'Dashboard';
                     <?php } ?>
                 </div>
                 <!-- /.row -->
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Aduan Sesuai Kategori</h3>
+                <?php if($user_level != '4'){ ?>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Aduan Sesuai Kategori</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="aduan_kategori" style="width: 100%; height: 300px;"></div>
+                                </div>
                             </div>
-                            <div class="panel-body">
-                                <div id="aduan_kategori" style="width: 100%; height: 300px;"></div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Aduan Sesuai Status</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="aduan_status" style="width: 100%; height: 300px;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Aduan Sesuai Status</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div id="aduan_status" style="width: 100%; height: 300px;"></div>
+                <?php } ?>
+                <?php if($user_level == '1' || $user_level == '2' || $user_level == '3'){ ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Aduan Sesuai Kecamatan</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="kecamatan_aduan" style="width: 100%; height: 400px;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
         <!-- /#page-wrapper -->

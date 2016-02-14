@@ -34,6 +34,8 @@ class ModelLogin extends Model
             $session['nik'] = $result['nik'];
             $session['nama'] = $result['nama'];
             $session['user_level'] = $result['user_level'];
+            $session['category'] = $result['category'];
+            $session['kecamatan'] = $result['kecamatan'];
         }
         
         return $result;

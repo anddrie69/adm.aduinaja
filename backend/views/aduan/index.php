@@ -7,6 +7,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\components\helper\FunctionHelper;
 
 $this->title = 'List Aduan';
 ?>
@@ -40,15 +41,28 @@ $this->title = 'List Aduan';
                                 <th>Tanggal</th>
                                 <th>Judul</th>
                                 <th>Member</th>
-                                <th>Category</th>
+                                <th>Kategori</th>
                                 <th>Deskripsi</th>
-                                <th>Img</th>
+                                <th>Status Aduan</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                                 $no=1;
+                                $function = new FunctionHelper();
                                 foreach ($data as $key => $value) {
+                                    switch ($value['status_aduan']) {
+                                        case '1':
+                                            $css = 'class="btn btn-primary"';
+                                        break;
+                                        case '2':
+                                            $css = 'class="btn btn-success"';
+                                        break;
+                                        case '3':
+                                            $css = 'class="btn btn-danger"';
+                                        break;
+                                    }
+                                    
                                     echo '<tr>
                                         <td>'.$no.'</td>
                                         <td>'.$value['tanggal_aduan'].'</td>
@@ -56,7 +70,7 @@ $this->title = 'List Aduan';
                                         <td>'.$value['nama_member'].'</td>
                                         <td>'.$value['nama_category'].'</td>
                                         <td>'.$value['deskripsi'].'</td>
-                                        <td>'.$value['img'].'</td>
+                                        <td><span '.$css. '>'. $function->StatusAduan($value['status_aduan']) .'</span></td>
                                     </tr>';
                                     $no++;
                                 }
